@@ -40,15 +40,15 @@ namespace Metamask
             //    return;
             //}
             // Создание экземпляра объекта транзакции
-            var senderPrivateKey = "0x34a84615ee517a2efdbadfb9cf5e566700da9eace1677424cf4e28ef9b926b78"; // Замените на свой приватный ключ
+            var senderPrivateKey = "f87809458ba9241fff2267f26c9d95f25bbef89d6419296fcad6873a984b2036"; // Замените на свой приватный ключ
            
             // Создаем аккаунт получателя
-            var receiverAccountAddres = "0xd328769f759C4364be07e8344cbE028C9389915B"; // Замените на приватный ключ, созданный ранее
+            var receiverAccountAddres = "0xf5BCCD27804d5f0E42Be9f25FDe3be2A85953b10"; // Замените на приватный ключ, созданный ранее
             // Устанавливаем параметры подключения к сети Ethereum
             //var rpcClient = new RpcClient(new Uri("1"));
             //var ecKey = new Nethereum.Signer.EthECKey(senderPrivateKey);
             var senderAccount = new Nethereum.Web3.Accounts.Account(senderPrivateKey);
-            var web3 = new Web3(senderAccount);
+            var web3 = new Web3(senderAccount, "https://mainnet.infura.io/v3/12f7996212be450b8e2de88139a50ecf");
             var nonce = await web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(senderAccount.Address, BlockParameter.CreatePending());
 
             var transaction = new TransactionInput
@@ -62,7 +62,6 @@ namespace Metamask
                 Nonce = new HexBigInteger(nonce),
                 MaxFeePerGas = new HexBigInteger(158912817)
             };
-
             // Получение подписанной транзакции
 
             // Отправка транзакции
@@ -71,16 +70,18 @@ namespace Metamask
             //var t = new AccountOfflineTransactionSigner();
             //var a = await senderAccount.TransactionManager.SignTransactionAsync(transaction);
             //var sign = t.SignTransaction(senderAccount, transaction);
-            var b = await web3.Eth.TransactionManager.SignTransactionAsync(transaction);
-            var signedTransaction = senderAccount.TransactionManager.SignTransactionAsync(transaction).ToString();
-            var transactionHash = await web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(b);
+            //var b = await web3.Eth.TransactionManager.SignTransactionAsync(transaction);
+            //var signedTransaction = senderAccount.TransactionManager.SignTransactionAsync(transaction).ToString();
+            //var transactionHash = await web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(b);
 
 
             //var trans = web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync("0x87b13ee7e6a1fe4260120a30ad9b0954076da66432c77e425ecef1ad570b0ffc");/*web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash.ToString());*/
             //await Console.Out.WriteLineAsync(trans.Status.ToString());
             // Создаем транзакцию
-            var transactiona = await web3.Eth.GetEtherTransferService().TransferEtherAndWaitForReceiptAsync(receiverAccountAddres, 35m, 2, new BigInteger(158912817));
-            await Console.Out.WriteLineAsync(transactiona.Status.ToString());
+            //var transactiona = await web3.Eth.GetEtherTransferService().TransferEtherAsync(receiverAccountAddres, 0.00054m, 10000000000000, 10200000000000);
+            //await Console.Out.WriteLineAsync(transactiona);
+            var a = web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync("0x291c264ad693e3c3faa8f8243843c5a3a2b568d1449d196130e0a61df574b469");
+            await Console.Out.WriteLineAsync(a.Status.ToString());
 
         }
     
